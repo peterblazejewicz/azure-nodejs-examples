@@ -1,0 +1,29 @@
+{
+  "name": "azure-web-job",
+  "version": "1.0.0",
+  "description": "A sample Azure WebJob NodeJS task",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peterblazejewicz/azure-nodejs-examples.git"
+  },
+  "keywords": [
+    "Azure",
+    "NodeJS",
+    "WebJob",
+    "cron",
+    "task"
+  ],
+  "author": "@peterblazejewicz",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/peterblazejewicz/azure-nodejs-examples/issues"
+  },
+  "homepage": "https://github.com/peterblazejewicz/azure-nodejs-examples#readme",
+  "devDependencies": {
+    "tsd": "^0.6.5"
+  }
+}
