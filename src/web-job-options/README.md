@@ -7,6 +7,7 @@ This example webjob uses [nconf](https://www.npmjs.com/package/nconf) module to 
 ```
 > npm install
 ```
+
 ```
 > gulp watch
 [23:26:28] Using gulpfile ~/git/azure-nodejs-examples/src/web-job-options/gulpfile.js
@@ -17,9 +18,11 @@ This example webjob uses [nconf](https://www.npmjs.com/package/nconf) module to 
 [23:26:29] Starting 'watch'...
 [23:26:29] Finished 'watch' after 12 ms
 ```
+
 The `dist` task will prepare `WebJob.zip` archive ready to be deployed to Azure.
 Note that Gulp task prepare required NPM modules:
 ```
+
 ```
 gulp.task("zip:dist", function() {
   return gulp.src([
