@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "A sample Azure WebJob NodeJS task",
-  "main": "lib/index.js",
+  "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "postinstall": "./node_modules/.bin/tsd reinstall"
   },
   "repository": {

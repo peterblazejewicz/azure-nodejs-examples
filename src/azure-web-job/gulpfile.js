@@ -27,12 +27,12 @@ gulp.task("transpile:dev", function() {
       .pipe(sourcemaps.init())
       .pipe(ts(project))
       .js.pipe(sourcemaps.write("."))
-      .pipe(gulp.dest("lib/"));  
+      .pipe(gulp.dest("."));  
 });
 
 gulp.task("zip:dist", function() {
   return gulp.src([
-    "lib/**",
+    "index.js",
     "package.json"
   ], {base: "."}).pipe(zip("webjob.zip"))
   .pipe(gulp.dest("dist/"));
