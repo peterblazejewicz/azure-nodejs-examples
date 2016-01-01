@@ -1,10 +1,11 @@
 {
   "name": "azure-web-job",
   "version": "1.0.0",
+  "private": true,
   "description": "A sample Azure WebJob NodeJS task",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "./node_modules/.bin/tsd reinstall"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,11 @@
   },
   "homepage": "https://github.com/peterblazejewicz/azure-nodejs-examples#readme",
   "devDependencies": {
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-typescript": "^2.10.0",
+    "gulp-zip": "^3.0.2",
     "tsd": "^0.6.5"
   }
 }
