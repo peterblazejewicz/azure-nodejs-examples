@@ -5,11 +5,11 @@ This example webjob uses [nconf](https://www.npmjs.com/package/nconf) module to 
 ## Description
 
 ```
-> npm install
+npm install
 ```
 
 ```
-> gulp watch
+gulp watch
 [23:26:28] Using gulpfile ~/git/azure-nodejs-examples/src/web-job-options/gulpfile.js
 [23:26:28] Starting 'clean:dev'...
 [23:26:28] Starting 'transpile:dev'...
@@ -21,7 +21,6 @@ This example webjob uses [nconf](https://www.npmjs.com/package/nconf) module to 
 
 The `dist` task will prepare `WebJob.zip` archive ready to be deployed to Azure.
 Note that Gulp task prepare required NPM modules:
-```
 
 ```
 gulp.task("zip:dist", function() {
@@ -36,7 +35,7 @@ gulp.task("zip:dist", function() {
 ```
 
 ```
-> gulp dist     
+gulp dist     
 [23:27:54] Using gulpfile ~/git/azure-nodejs-examples/src/web-job-options/gulpfile.js
 [23:27:54] Starting 'clean:dist'...
 [23:27:54] Starting 'zip:dist'...
