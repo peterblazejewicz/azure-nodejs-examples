@@ -1,0 +1,26 @@
+{
+  "name": "web-job-options",
+  "version": "1.0.0",
+  "private": true,
+  "description": "An Azure WebJob example to test options",
+  "keywords": [
+    "azure",
+    "webjob",
+    "task",
+    "schedule",
+    "node",
+    "job"
+  ],
+  "author": "peterblazejewicz",
+  "license": "Unlicense",
+  "dependencies": {
+    "nconf": "^0.8.2"
+  },
+  "devDependencies": {
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-typescript": "^2.10.0",
+    "gulp-zip": "^3.0.2"
+  }
+}

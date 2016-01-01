@@ -1,0 +1,9 @@
+{
+  "Azure": {
+    "Store": {
+      "AccountName": "account-name",
+      "AccountKey": "account-key",
+      "QueueName": "queue-name"
+    }
+  }
+}
