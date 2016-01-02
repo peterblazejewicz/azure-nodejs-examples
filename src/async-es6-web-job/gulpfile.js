@@ -28,7 +28,8 @@ gulp.task("dist", ["clean:dist"], function() {
       "package.json",
       "config.json"
     ], {base: "."}), gulp.src([
-        "lib/**"
+        "lib/**",
+        "!lib/**/*.js.map"
     ], { base: "lib/" })).pipe(zip("webjob.zip"))
   .pipe(gulp.dest("dist/"));
 });
