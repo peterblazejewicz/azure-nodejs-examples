@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "lib/",
+    "rootDir": "src/"
+  },
+  "filesGlob": [
+    "src/**/*.ts",
+    "!./node_modules/**/*.ts",
+    "!./node_modules/**",
+    "./typings/tsd.d.ts"
+  ],
+  "files": [
+      "src/index.ts",
+      "src/webjobs/IwebJob.ts",
+      "src/webjobs/IwebJobAsync.ts",
+      "src/webjobs/BaseWebJob.ts",
+      "src/webjobs/QueueWebJob.ts"
+  ]
+}
