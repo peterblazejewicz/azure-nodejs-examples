@@ -10,9 +10,6 @@
     "node",
     "es6"
   ],
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "@peterblazejewicz",
   "license": "Unlicense",
   "eslintConfig": {
@@ -28,12 +25,12 @@
     "gulp-babel": "^6.1.1",
     "gulp-concat": "^2.6.0",
     "gulp-sourcemaps": "^1.6.0",
+    "gulp-typescript": "^2.10.0",
     "gulp-zip": "^3.0.2",
     "merge2": "^0.3.6"
   },
   "dependencies": {
-    "babel-polyfill": "^6.3.14",
-    "gulp-typescript": "^2.10.0"
+    "babel-polyfill": "^6.3.14"
   },
   "engines": {
     "node": ">=4.*"
