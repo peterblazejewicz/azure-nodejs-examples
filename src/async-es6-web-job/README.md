@@ -9,15 +9,18 @@ You can read about TypeScript 1.7 features in [release announcement](http://blog
 
 ## Documentation
 
+To install project dependencies run:
 ```
 npm install
 ```
 
+To transpile TypeScript into ES6 and then into ES5 via Babel:
 ```
 gulp watch
 ```
+This will create `lib/` directory with transpiled JavaScript sources.
 
-To just compile output:
+To just compile output into `lib/` directory:
 ```
 gulp babel
 ```
@@ -26,8 +29,38 @@ To prepare Azure distribution archive (`webjob.zip`):
 ```
 gulp dist
 ```
+This task will create `dist/` directory with ready to use archive file. Just upload this file to Azure as Web Job.
+
+
+To clean `dist/` and `lib/` directories:
+```
+gulp clean
+```
 
 > The Gulp tasks are also exposed as tasks in VSCode.
+
+```ts
+"use strict";
+import "babel-polyfill";
+import { QueueWebJob } from "./webjobs/QueueWebJob";
+
+let tokens: string[] = [
+    "Hello",
+    "beautiful",
+    "asynchronous",
+    "world!"
+];
+let job: QueueWebJob = new QueueWebJob(tokens);
+try {
+    job.execute()
+        .then(() => {
+            job.processMessage("Task finished");
+        });
+} catch (error) {
+    job.processError(error);
+}
+```
+
 
 When uploaded to Azure and run it will output to Azure log:
 ```
