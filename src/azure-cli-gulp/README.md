@@ -1,10 +1,23 @@
 # Basic NodeJS Azure web job upload example
 
-Outputs current semver value into console. When you update a semver:
+Example NodeJS web job workflow for Azure:
+- start your work and test locally
+- when ready commit changes and update NPM version
 ```
 npm version patch
 ```
-just redeploy task to your Azure web site
+- create distribution for Azure wep app job:
+```
+gulp dist
+```
+- upload created distribution to Azure:
+```
+gulp webjob:deploy
+```
+- optionally start new web job:
+```
+gulp webjob:start
+```
 
 
 ## Usage
