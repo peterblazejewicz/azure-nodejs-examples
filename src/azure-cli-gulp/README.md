@@ -69,6 +69,32 @@ info:    site job start command OK
 [23:08:51] Finished 'webjob:start' after 7.37 s
 ```
 
+To see web job run history:
+```
+gulp webjob:history
+```
+For example:
+```
+gulp webjob:history
+[23:18:36] Using gulpfile ~/git/azure-nodejs-examples/src/azure-cli-gulp/gulpfile.js
+[23:18:36] Starting 'webjob:history'...
+info:    Executing command site job history list
+
+info:    Getting site information
+
+info:    Getting WebJob runs
+
+data:    Id                  Status   Duration   Start Time                    End Time
+
+data:    ------------------  -------  ---------  ----------------------------  ----------------------------
+
+data:    201601042208502288  Success  0:0:0.NaN  2016-01-04T22:08:50.2288013Z  2016-01-04T22:08:50.7756779Z
+
+info:    site job history list command OK
+
+[23:18:41] Finished 'webjob:history' after 5.47 s
+```
+
 ## Author
 
 @peterblazejewicz

@@ -81,10 +81,45 @@ gulp.task("webjob:start", function (cb) {
             "site": "your-web-app-name"
         });
     // we dont need "jobFile"
-    nconf.clear("options:jobFile"); 
+    nconf.clear("options:jobFile");
     // constructs arguments for azure-cli
     var args = dargs(nconf.get("options")).concat(nconf.get("site")) || [];
     var execString = util.format("node ./node_modules/.bin/azure site job start %s",
+        args.join(" "));
+    var child = exec(execString);
+    child.stdout.on("data", function (data) {
+        console.log(data);
+    });
+    child.stderr.on("data", function (data) {
+        console.error(data);
+    });
+    child.on("close", function (code) {
+        cb(code);
+    });
+});
+
+/**
+ * azure site job history list --help
+ * Show history of web job from Azure portal using azure-cli command line tool
+ * and options from config.json or defaults one
+ * The task will fail if your current azure-cli session expired
+ */
+gulp.task("webjob:history", function (cb) {
+    nconf.file({
+            file: './config.json'
+        }) // defaults if not found in `config.json`
+        .defaults({
+            "options": {
+                "jobName": pkg.name,
+            },
+            "site": "your-web-app-name"
+        });
+    // we dont need "jobFile" and jobType args
+    nconf.clear("options:jobFile");
+    nconf.clear("options:jobType");
+    // constructs arguments for azure-cli
+    var args = dargs(nconf.get("options")).concat(nconf.get("site")) || [];
+    var execString = util.format("node ./node_modules/.bin/azure site job history list %s",
         args.join(" "));
     var child = exec(execString);
     child.stdout.on("data", function (data) {
