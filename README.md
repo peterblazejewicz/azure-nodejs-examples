@@ -4,6 +4,40 @@ Various examples for MS Azure using NodeJS. A companion project to [Azure ASP.NE
 
 ## Description
 
+### [Azure CLI integration with Gulp](/src/azure-cli-gulp)
+
+Develop and deploy NodeJS web jobs to Azure with Gulp.
+
+Example NodeJS web job workflow for Azure:
+- start your work and test locally
+- when ready commit changes and update NPM version
+```
+npm version patch
+```
+- create distribution for Azure wep app job:
+```
+gulp dist
+```
+- upload created distribution to Azure:
+```
+gulp webjob:deploy
+```
+- optionally start new web job:
+```
+gulp webjob:start
+```
+
+Other:
+```
+gulp webjob:history
+```
+
+Features:
+- VSCode integration
+- Gulp based tasks
+- azure-cli integration
+
+
 ### [Azure NodeJS simple web job](/src/azure-web-job)
 
 This example is based on single `index.js` file without external dependencies from NPM modules. It uses only built-in Node features and modules.
