@@ -1,0 +1,8 @@
+{
+    "options": {
+        "jobName": "UploadWebJobExample",
+        "jobType": "triggered",
+        "jobFile": "./dist/webjob.zip"
+    },
+    "site": "your-web-app"
+}
