@@ -24,7 +24,7 @@ gulp webjob:start
 
 The Gulp based workflow uses `config.json` file for storing options. Create one from template:
 ```
-mv config.default.json config.json
+cp config.default.json config.json
 ```
 and fill it with your web app information. The Gulp task contains also default configuration which you can modify directly. It will be used if you don't want to use configuration file.
 
