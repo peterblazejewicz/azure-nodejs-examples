@@ -1,0 +1,25 @@
+{
+  "name": "webjob",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A simple web job runnable on Azure",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "Unlicense",
+  "dependencies": {
+    "nconf": "^0.8.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.3.26",
+    "babel-preset-es2015": "^6.3.13",
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-zip": "^3.0.2"
+  },
+  "engines": {
+      "node": "4.2.4"
+  }
+}
