@@ -3,15 +3,18 @@
     "noImplicitAny": false,
     "noEmitOnError": true,
     "removeComments": true,
+    "noResolve": false,
     "sourceMap": true,
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "preserveConstEnums": true,
     "outDir": ".",
     "outFile": "./index.js"
   },
   "filesGlob": [
-    "typings/**"  
+    "!./node_modules/**/*.ts",
+    "!./node_modules/**",
+    "./typings/tsd.d.ts"
   ],
   "files": [
     "src/index.ts"
