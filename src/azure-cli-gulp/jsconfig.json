@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
-        "target": "ES5",
+        "target": "ES6",
         "module": "commonjs"
     },
     "files": [
-        "gulpfile.js"
+        "gulpfile.babel.js",
+        "index.js"
     ]
 }

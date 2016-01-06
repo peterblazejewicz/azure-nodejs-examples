@@ -1,7 +1,8 @@
-var pkg = require("./package.json");
+"use strict";
+const pkg = require("./package.json");
 //
-function execute() {
-    console.log("Executing task from %s version", pkg.version);
+var execute = () =>  {
+    console.log(`Executing task from ${pkg.version} version`);
     console.log("Finishing ...");
 }
 //
