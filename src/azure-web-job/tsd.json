@@ -6,7 +6,7 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "node/node.d.ts": {
-      "commit": "dc9dabe74a5be62613b17a3605309783a12ff28a"
+      "commit": "f11e49cfb77f99678657ddfe5d43017849675c64"
     },
     "gulp/gulp.d.ts": {
       "commit": "dc9dabe74a5be62613b17a3605309783a12ff28a"
@@ -18,16 +18,16 @@
       "commit": "dc9dabe74a5be62613b17a3605309783a12ff28a"
     },
     "glob/glob.d.ts": {
-      "commit": "dc9dabe74a5be62613b17a3605309783a12ff28a"
+      "commit": "f11e49cfb77f99678657ddfe5d43017849675c64"
     },
     "minimatch/minimatch.d.ts": {
-      "commit": "dc9dabe74a5be62613b17a3605309783a12ff28a"
+      "commit": "f11e49cfb77f99678657ddfe5d43017849675c64"
     },
     "del/del.d.ts": {
-      "commit": "dc9dabe74a5be62613b17a3605309783a12ff28a"
+      "commit": "f11e49cfb77f99678657ddfe5d43017849675c64"
     },
     "es6-promise/es6-promise.d.ts": {
-      "commit": "dc9dabe74a5be62613b17a3605309783a12ff28a"
+      "commit": "f11e49cfb77f99678657ddfe5d43017849675c64"
     },
     "gulp-typescript/gulp-typescript.d.ts": {
       "commit": "dc9dabe74a5be62613b17a3605309783a12ff28a"
