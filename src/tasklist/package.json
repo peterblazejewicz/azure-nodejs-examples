@@ -3,10 +3,10 @@
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
-      "express": "2.x"
-    , "ejs": ">= 0.4.3"
-    , "jade": ">= 0.18.0"
-    , "node-uuid": "> = 1.2.0"
-    , "azure": ">= 0.5.1"
+      "express": "^4.13.3"
+    , "ejs": "^2.3.4"
+    , "jade": "^1.11.0"
+    , "node-uuid": "^1.4.7"
+    , "azure": "^0.10.6"
   }
 }
