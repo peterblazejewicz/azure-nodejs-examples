@@ -2,6 +2,7 @@
 .vscode
 .editorconfig
 .jshintrc
+config.json
 jsconfig.json
 tsd.json
 typings
