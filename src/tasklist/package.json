@@ -1,12 +1,13 @@
 {
-    "name": "application-name"
-  , "version": "0.0.1"
-  , "private": true
-  , "dependencies": {
-      "express": "^4.13.3"
-    , "ejs": "^2.3.4"
-    , "jade": "^1.11.0"
-    , "node-uuid": "^1.4.7"
-    , "azure": "^0.10.6"
+  "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "azure": "^0.10.6",
+    "ejs": "^2.3.4",
+    "express": "^4.13.3",
+    "jade": "^1.11.0",
+    "nconf": "^0.8.2",
+    "node-uuid": "^1.4.7"
   }
 }
