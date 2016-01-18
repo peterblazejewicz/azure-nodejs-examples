@@ -1,7 +1,0 @@
-# additional settings to use when making upstream PR
-#.editorconfig
-#.jshintrc
-#jsconfig.json
-#tsd.json
-typings
-.vscode
