@@ -24,6 +24,7 @@ var methodOverride = require('method-override');
 var stylus = require('stylus');
 var expressEjsLayouts = require('express-ejs-layouts');
 var path = require('path');
+
 var Blog = require('./blog').Blog;
 
 var app = module.exports = express();
