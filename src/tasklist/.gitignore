@@ -1,8 +1,0 @@
-# VSCode specific dev files
-.vscode
-.editorconfig
-.jshintrc
-config.json
-jsconfig.json
-tsd.json
-typings
