@@ -15,20 +15,15 @@
 // 
 
 var fs = require('fs');
-if (!fs.existsSync) {
-  fs.existsSync = require('path').existsSync;
-}
-
 var azure;
-if (fs.existsSync('./../../../lib/azure.js')) {
+try {
+  fs.existsSync('./../../../lib/azure.js');
   azure = require('./../../../lib/azure');
-} else {
+} catch (error) {
   azure = require('azure');
 }
 
 var uuid = require('node-uuid');
-
-var ServiceClient = azure.ServiceClient;
 
 // Table service 'constants'
 var TABLE_NAME = 'pushpins';
@@ -46,6 +41,7 @@ function PushpinService(storageAccount, storageAccessKey) {
 }
 
 PushpinService.prototype.initialize = function (callback) {
+
   var self = this;
 
   var createContainer = function () {
@@ -54,8 +50,7 @@ PushpinService.prototype.initialize = function (callback) {
       if (createContainerError) {
         callback(createContainerError);
       } else if (created) {
-        self.blobClient.setContainerAcl(CONTAINER_NAME,
-          azure.Constants.BlobConstants.BlobContainerPublicAccessType.BLOB,
+        self.blobClient.setContainerAcl(CONTAINER_NAME,azure.Constants.BlobConstants.BlobContainerPublicAccessType.BLOB,
           callback);
       } else {
         callback();
@@ -75,7 +70,7 @@ PushpinService.prototype.initialize = function (callback) {
 
 PushpinService.prototype.createPushpin = function (pushpinData, pushpinImage, callback) {
   var self = this;
-  var rowKey = 'row' + uuid();
+  var rowKey = 'row' + uuid.v4();
 
   function insertEntity(error, blob) {
     var entity = pushpinData;
@@ -98,21 +93,18 @@ PushpinService.prototype.createPushpin = function (pushpinData, pushpinImage, ca
 
 PushpinService.prototype.listPushpins = function (callback) {
   var self = this;
-  var tableQuery = azure.TableQuery
+  var tableQuery = new azure.TableQuery()
     .select()
-    .from(TABLE_NAME);
-
-  self.tableClient.queryEntities(tableQuery, callback);
+  self.tableClient.queryEntities(TABLE_NAME, tableQuery, null, callback);
 };
 
 PushpinService.prototype.removePushpin = function (pushpin, callback) {
   var self = this;
   var tableQuery = azure.TableQuery
     .select()
-    .from(TABLE_NAME)
     .where('latitude == ? && longitude == ?', pushpin.latitude, pushpin.longitude);
 
-  self.tableClient.queryEntities(tableQuery, function (error, pushpins) {
+  self.tableClient.queryEntities(TABLE_NAME, tableQuery, null, function (error, pushpins) {
     if (error) {
       callback(error);
     } else if (pushpins && pushpins.length > 0) {

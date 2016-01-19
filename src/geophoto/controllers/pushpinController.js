@@ -38,8 +38,8 @@ exports.setupPOST = function (request, response) {
   };
 
   if (request.body.account &&
-      request.body.accessKey &&
-      request.body.bingMapsCredentials) {
+    request.body.accessKey &&
+    request.body.bingMapsCredentials) {
 
     nconf.set('AZURE_STORAGE_ACCOUNT', request.body.account);
     nconf.set('AZURE_STORAGE_ACCESS_KEY', request.body.accessKey);
@@ -69,11 +69,10 @@ exports.showPushpins = function (request, response) {
 
   var renderPushpins = function (error, entities) {
     response.render('index', {
-      locals: {
-        error: error,
-        pushpins: entities,
-        bingMapsCredentials: nconf.get('BING_MAPS_CREDENTIALS')
-      }
+      title: 'Pushins Example',
+      error: error,
+      pushpins: entities.entries,
+      bingMapsCredentials: nconf.get('BING_MAPS_CREDENTIALS')
     });
   };
 
@@ -120,9 +119,9 @@ exports.createPushpin = function (request, response) {
   }
 };
 
-exports.socketConnection = function(socket) {
-  socket.on('removePushpin', function(pushpin) {
-    pushpinService.removePushpin(pushpin, function(error) {
+exports.socketConnection = function (socket) {
+  socket.on('removePushpin', function (pushpin) {
+    pushpinService.removePushpin(pushpin, function (error) {
       if (!error) {
         exports.io.sockets.emit('removePushpin', pushpin);
         socket.emit('removePushpin', pushpin);
@@ -130,8 +129,8 @@ exports.socketConnection = function(socket) {
     });
   });
 
-  socket.on('clearPushpins', function() {
-    pushpinService.clearPushpins(function(error) {
+  socket.on('clearPushpins', function () {
+    pushpinService.clearPushpins(function (error) {
       initialized = false;
       if (!error) {
         exports.io.sockets.emit('clearPushpins');
@@ -145,6 +144,5 @@ exports.isConfigured = function () {
   if (nconf.get('AZURE_STORAGE_ACCOUNT')) {
     return true;
   }
-
   return false;
 };

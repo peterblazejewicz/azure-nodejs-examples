@@ -21,6 +21,8 @@
 var express = require('express'),
   bodyParser = require('body-parser'),
   errorHandler = require('errorhandler'),
+  expressEjsLayouts = require('express-ejs-layouts'),
+  io = require('socket.io'),
   methodOverride = require('method-override'),
   pushpinController = require('./controllers/pushpinController'),
   socketio = require('socket.io'),
@@ -28,13 +30,13 @@ var express = require('express'),
   path = require('path');
 
 var app = module.exports = express();
-var io;
 
 // Configuration
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+app.use(expressEjsLayouts);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride());
@@ -54,12 +56,12 @@ app.get('/setup', pushpinController.setup);
 app.post('/setupPOST', pushpinController.setupPOST);
 app.post('/createPushpin', pushpinController.createPushpin);
 
-var server = http.createServer();
-server.listen(app.get('port'), function () {
+var server = app.listen(app.get('port'), function () {
   console.log("Express server listening on port %d in %s mode",
     app.get('port'),
     app.get('env'));
 });
 // Setup socket.io
-pushpinController.io = io = socketio(app);
-io.on('connection', pushpinController.socketConnection);
+pushpinController.io = io(server);
+pushpinController.io.on('connection', pushpinController.socketConnection);
+
