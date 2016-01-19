@@ -121,7 +121,6 @@ function openPushpinDialog(event) {
       // Open dialog to add the pushpin
       $("#map-dialog").dialog({
         autoOpen: true,
-        modal: true,
         width: 500,
         height: 350,
         resizable: true,
