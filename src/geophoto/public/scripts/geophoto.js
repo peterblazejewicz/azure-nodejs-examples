@@ -135,7 +135,15 @@ function openPushpinDialog(event) {
 }
 
 function savePushpin() {
-  $('#addPushpinForm').submit();
+  var $form = $('#addPushpinForm');
+  // make html5 based validation
+  // before sending data to server
+  var isValid = $form[0].checkValidity();
+  if(isValid === true) {
+    $form.submit();
+  } else {
+    $form.find('input:invalid, textarea:invalid').first().focus();
+  }
 }
 
 function cancelPushpin() {
