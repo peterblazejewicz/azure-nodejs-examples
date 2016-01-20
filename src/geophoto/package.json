@@ -9,6 +9,7 @@
     "express": "^4.13.3",
     "express-ejs-layouts": "^2.0.0",
     "method-override": "^2.3.5",
+    "multer": "^1.1.0",
     "nconf": "^0.8.2",
     "node-uuid": "^1.4.7",
     "socket.io": "^1.4.4",

@@ -9,16 +9,16 @@
       "commit": "70bf7e2bfeb0d5b1b651ef3219bcc65c8eec117e"
     },
     "express/express.d.ts": {
-      "commit": "70bf7e2bfeb0d5b1b651ef3219bcc65c8eec117e"
+      "commit": "fab683ca77d0286b9d51aba6375deaceb41b22f5"
     },
     "serve-static/serve-static.d.ts": {
-      "commit": "70bf7e2bfeb0d5b1b651ef3219bcc65c8eec117e"
+      "commit": "fab683ca77d0286b9d51aba6375deaceb41b22f5"
     },
     "node/node.d.ts": {
-      "commit": "70bf7e2bfeb0d5b1b651ef3219bcc65c8eec117e"
+      "commit": "fab683ca77d0286b9d51aba6375deaceb41b22f5"
     },
     "mime/mime.d.ts": {
-      "commit": "70bf7e2bfeb0d5b1b651ef3219bcc65c8eec117e"
+      "commit": "fab683ca77d0286b9d51aba6375deaceb41b22f5"
     },
     "nconf/nconf.d.ts": {
       "commit": "70bf7e2bfeb0d5b1b651ef3219bcc65c8eec117e"
@@ -46,6 +46,9 @@
     },
     "method-override/method-override.d.ts": {
       "commit": "70bf7e2bfeb0d5b1b651ef3219bcc65c8eec117e"
+    },
+    "multer/multer.d.ts": {
+      "commit": "fab683ca77d0286b9d51aba6375deaceb41b22f5"
     }
   }
 }
