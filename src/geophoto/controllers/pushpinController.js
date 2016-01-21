@@ -94,8 +94,9 @@ exports.createPushpin = function (request, response) {
     var pushpinData = request.body;
     var pushpinImage = null;
 
-    if (request.files && request.files.image && request.files.image.size > 0) {
-      pushpinImage = request.files.image;
+    if (request.files && request.files.length > 0) {
+      // this is a multer file object instance
+      pushpinImage = request.files[0];
     }
 
     pushpinService.createPushpin(pushpinData, pushpinImage, function (createPushpinError) {

@@ -85,7 +85,7 @@ PushpinService.prototype.createPushpin = function (pushpinData, pushpinImage, ca
   };
 
   if (pushpinImage) {
-    self.blobClient.createBlockBlobFromFile(CONTAINER_NAME, rowKey, pushpinImage.path, insertEntity);
+    self.blobClient.createBlockBlobFromLocalFile(CONTAINER_NAME, rowKey, pushpinImage.path, insertEntity);
   } else {
     insertEntity();
   }

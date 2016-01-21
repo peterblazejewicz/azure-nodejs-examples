@@ -24,7 +24,7 @@ var express = require('express'),
   expressEjsLayouts = require('express-ejs-layouts'),
   io = require('socket.io'),
   methodOverride = require('method-override'),
-  multer  = require('multer')(),
+  multer  = require('multer')({dest: './uploads'}),
   pushpinController = require('./controllers/pushpinController'),
   socketio = require('socket.io'),
   http = require('http'),
@@ -55,7 +55,7 @@ if ('production' == app.get('env')) {
 app.get('/', pushpinController.showPushpins);
 app.get('/setup', pushpinController.setup);
 app.post('/setupPOST', pushpinController.setupPOST);
-app.post('/createPushpin', multer.array(), pushpinController.createPushpin);
+app.post('/createPushpin', multer.array('image'), pushpinController.createPushpin);
 
 var server = app.listen(app.get('port'), function () {
   console.log("Express server listening on port %d in %s mode",
