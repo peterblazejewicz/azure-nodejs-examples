@@ -48,10 +48,12 @@ function initializeSockets() {
   socket = io.connect();
 
   socket.on('addPushpin', function (pushpin) {
+    pushpin = entityToObject(pushpin);
     addPushpin(pushpin);
   });
 
   socket.on('removePushpin', function(entity) {
+    entity = entityToObject(entity);
     removePushpin(entity);
   });
 
@@ -164,7 +166,8 @@ function clearPushpins() {
 }
 
 function emitRemovePushpin() {
-  socket.emit('removePushpin', currentPushpin);
+  var removedPushpin = objectToEntity(currentPushpin);
+  socket.emit('removePushpin', removedPushpin);
 }
 
 function emitClearPushpins() {
@@ -252,5 +255,28 @@ function removeByElement(arrayName, arrayElement) {
     if (arrayName[i] === arrayElement) {
       arrayName.splice(i, 1);
     }
+  }
+}
+
+function objectToEntity(obj) {
+  return {
+    title: {'_': obj.title },
+    description: {'_': obj.description },
+    latitude: {'_': obj.latitue },
+    longitude: {'_': obj.longitude },
+    PartitionKey: {'_': obj.PartitionKey },
+    RowKey: {'_': obj.RowKey }
+  }
+}
+
+function entityToObject(entity)
+{
+  return {
+    title: entity.title._ || '',
+    description: entity.description._ || '',
+    latitude: entity.latitude._ || '',
+    longitude: entity.longitude._ || '',
+    PartitionKey: entity.PartitionKey._ || '',
+    RowKey: entity.RowKey._ || ''
   }
 }

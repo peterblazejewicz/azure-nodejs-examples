@@ -15,7 +15,7 @@
       var bingMapsCredentials = '<% if (bingMapsCredentials) { %><%= bingMapsCredentials %><% } %>';
       var initialPushpins = [
         <% if (pushpins) { pushpins.forEach(function(pushpin) { %>
-         { title: '<%= pushpin.title %>', description: '<%= pushpin.description %>', latitude: '<%= pushpin.latitude %>', longitude: '<%= pushpin.longitude %>', RowKey: '<%= pushpin.RowKey %>', PartitionKey: '<%= pushpin.PartitionKey %>', imageUrl: '<%= pushpin.imageUrl %>' },
+         { title: '<%= pushpin.title._ %>', description: '<%= pushpin.description._ %>', latitude: '<%= pushpin.latitude._ %>', longitude: '<%= pushpin.longitude._ %>', RowKey: '<%= pushpin.RowKey._ %>', PartitionKey: '<%= pushpin.PartitionKey._ %>', imageUrl: '<%= pushpin.imageUrl ? pushpin.imageUrl._ : "" %>' },
         <% }) } %>
       ];
     </script>

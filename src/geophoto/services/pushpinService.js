@@ -24,7 +24,7 @@ try {
 }
 
 var uuid = require('node-uuid');
-
+var entityGenerator = azure.TableUtilities.entityGenerator;
 // Table service 'constants'
 var TABLE_NAME = 'pushpins';
 var DEFAULT_PARTITION = 'pushpins';
@@ -70,15 +70,20 @@ PushpinService.prototype.initialize = function (callback) {
 
 PushpinService.prototype.createPushpin = function (pushpinData, pushpinImage, callback) {
   var self = this;
-  var rowKey = 'row' + uuid.v4();
-
+  var rowKey = uuid.v4();
   function insertEntity(error, blob) {
-    var entity = pushpinData;
-    entity.RowKey = rowKey;
-    entity.PartitionKey = DEFAULT_PARTITION;
+    var entity = {
+      PartitionKey: entityGenerator.String(DEFAULT_PARTITION),
+      RowKey: entityGenerator.String(rowKey),
+      title: entityGenerator.String(pushpinData.title),
+      description: entityGenerator.String(pushpinData.description),
+      latitude: entityGenerator.String(pushpinData.latitude), 
+      longitude: entityGenerator.String(pushpinData.longitude) 
+    };
+    
 
     if (blob) {
-      entity.imageUrl = self.blobClient.getBlobUrl(blob.container, blob.blob);
+      entity.imageUrl = self.blobClient.getUrl(blob.container, blob.blob);
     }
 
     self.tableClient.insertEntity(TABLE_NAME, entity, callback);
@@ -100,7 +105,7 @@ PushpinService.prototype.listPushpins = function (callback) {
 
 PushpinService.prototype.removePushpin = function (pushpin, callback) {
   var self = this;
-  var tableQuery = azure.TableQuery
+  var tableQuery = new azure.TableQuery()
     .select()
     .where('latitude == ? && longitude == ?', pushpin.latitude, pushpin.longitude);
 
