@@ -8,6 +8,7 @@
     "errorhandler": "^1.4.3",
     "express": "^4.13.3",
     "express-ejs-layouts": "^2.0.0",
+    "lodash": "^4.0.0",
     "method-override": "^2.3.5",
     "multer": "^1.1.0",
     "nconf": "^0.8.2",
