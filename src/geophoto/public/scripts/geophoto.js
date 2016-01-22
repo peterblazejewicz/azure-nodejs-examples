@@ -48,12 +48,10 @@ function initializeSockets() {
   socket = io.connect();
 
   socket.on('addPushpin', function (pushpin) {
-    pushpin = entityToObject(pushpin);
     addPushpin(pushpin);
   });
 
   socket.on('removePushpin', function(entity) {
-    entity = entityToObject(entity);
     removePushpin(entity);
   });
 
@@ -166,8 +164,7 @@ function clearPushpins() {
 }
 
 function emitRemovePushpin() {
-  var removedPushpin = objectToEntity(currentPushpin);
-  socket.emit('removePushpin', removedPushpin);
+  socket.emit('removePushpin', currentPushpin);
 }
 
 function emitClearPushpins() {

@@ -71,7 +71,7 @@ exports.showPushpins = function (request, response) {
     response.render('index', {
       title: 'Pushins Example',
       error: error,
-      pushpins: entities.entries,
+      pushpins: pushpinService.unwrapEntities(entities.entries),
       bingMapsCredentials: nconf.get('BING_MAPS_CREDENTIALS')
     });
   };
@@ -122,9 +122,9 @@ exports.createPushpin = function (request, response) {
 
 exports.socketConnection = function (socket) {
   socket.on('removePushpin', function (pushpin) {
+    
     pushpinService.removePushpin(pushpin, function (error) {
       if (!error) {
-        exports.io.sockets.emit('removePushpin', pushpin);
         socket.emit('removePushpin', pushpin);
       }
     });
@@ -147,3 +147,4 @@ exports.isConfigured = function () {
   }
   return false;
 };
+

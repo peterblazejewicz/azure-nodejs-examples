@@ -24,6 +24,7 @@ try {
 }
 
 var uuid = require('node-uuid');
+var _ = require('lodash');
 var entityGenerator = azure.TableUtilities.entityGenerator;
 // Table service 'constants'
 var TABLE_NAME = 'pushpins';
@@ -50,7 +51,7 @@ PushpinService.prototype.initialize = function (callback) {
       if (createContainerError) {
         callback(createContainerError);
       } else if (created) {
-        self.blobClient.setContainerAcl(CONTAINER_NAME,azure.Constants.BlobConstants.BlobContainerPublicAccessType.BLOB,
+        self.blobClient.setContainerAcl(CONTAINER_NAME, azure.Constants.BlobConstants.BlobContainerPublicAccessType.BLOB,
           callback);
       } else {
         callback();
@@ -77,10 +78,10 @@ PushpinService.prototype.createPushpin = function (pushpinData, pushpinImage, ca
       RowKey: entityGenerator.String(rowKey),
       title: entityGenerator.String(pushpinData.title),
       description: entityGenerator.String(pushpinData.description),
-      latitude: entityGenerator.String(pushpinData.latitude), 
-      longitude: entityGenerator.String(pushpinData.longitude) 
+      latitude: entityGenerator.String(pushpinData.latitude),
+      longitude: entityGenerator.String(pushpinData.longitude)
     };
-    
+
 
     if (blob) {
       entity.imageUrl = self.blobClient.getUrl(blob.container, blob.blob);
@@ -112,8 +113,13 @@ PushpinService.prototype.removePushpin = function (pushpin, callback) {
   self.tableClient.queryEntities(TABLE_NAME, tableQuery, null, function (error, pushpins) {
     if (error) {
       callback(error);
-    } else if (pushpins && pushpins.length > 0) {
-      self.tableClient.deleteEntity(TABLE_NAME, pushpins[0], callback);
+    } else if (pushpins && pushpins.entries.length > 0) {
+      var pushpin = pushpins.entries[0];
+      var entity = {
+        PartitionKey: {'_': pushpin.PartitionKey._},
+        RowKey: {'_': pushpin.RowKey._}
+      };
+      self.tableClient.deleteEntity(TABLE_NAME, entity, callback);
     } else {
       callback();
     }
@@ -153,3 +159,19 @@ PushpinService.prototype.clearPushpins = function (callback) {
     }
   });
 };
+
+/**
+ * Convert TableStorage entity into 
+ * plain pushpin objects
+ */
+PushpinService.prototype.unwrapEntities = function (entities) {
+  var updated = [];
+  entities = entities || [];
+  _(entities).forEach(function (entity) {
+    updated.push(_.mapValues(entity, function (value, key, object) {
+      if (_.has(value, '_')) return value._;
+      return value;
+    }));
+  });
+  return updated;
+}
