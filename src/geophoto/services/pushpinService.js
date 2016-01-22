@@ -116,8 +116,8 @@ PushpinService.prototype.removePushpin = function (pushpin, callback) {
     } else if (pushpins && pushpins.entries.length > 0) {
       var pushpin = pushpins.entries[0];
       var entity = {
-        PartitionKey: {'_': pushpin.PartitionKey._},
-        RowKey: {'_': pushpin.RowKey._}
+        PartitionKey: { '_': pushpin.PartitionKey._ },
+        RowKey: { '_': pushpin.RowKey._ }
       };
       self.tableClient.deleteEntity(TABLE_NAME, entity, callback);
     } else {
@@ -129,13 +129,17 @@ PushpinService.prototype.removePushpin = function (pushpin, callback) {
 PushpinService.prototype.clearPushpins = function (callback) {
   var self = this;
   var deleteEntities = function (entities) {
-    if (entities && entities.length > 0) {
-      var currentEntity = entities.pop();
-      self.tableClient.deleteEntity(TABLE_NAME, currentEntity, function (deleteError) {
+    if (entities && entities.entries.length > 0) {
+      var currentEntity = entities.entries.pop();
+      var entity = {
+        PartitionKey: { '_': currentEntity.PartitionKey._ },
+        RowKey: { '_': currentEntity.RowKey._ }
+      }
+      self.tableClient.deleteEntity(TABLE_NAME, entity, function (deleteError) {
         if (deleteError) {
           callback(error);
         } else if (currentEntity.imageUrl) {
-          self.blobClient.deleteBlob(CONTAINER_NAME, currentEntity.RowKey, function (deleteBlobError) {
+          self.blobClient.deleteBlob(CONTAINER_NAME, currentEntity.RowKey._, function (deleteBlobError) {
             if (deleteBlobError) {
               callback(deleteBlobError);
             } else {
@@ -151,7 +155,7 @@ PushpinService.prototype.clearPushpins = function (callback) {
     }
   };
 
-  exports.listPushpins(function (error, entities) {
+  self.listPushpins(function (error, entities) {
     if (error) {
       callback(error);
     } else {
