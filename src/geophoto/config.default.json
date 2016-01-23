@@ -1,5 +1,5 @@
 {
-  "AZURE_STORAGE_ACCOUNT": "",
-  "AZURE_STORAGE_ACCESS_KEY": "",
-  "BING_MAPS_CREDENTIALS": ""
+  "AZURE_STORAGE_ACCOUNT": "somestorageaccount",
+  "AZURE_STORAGE_ACCESS_KEY": "somebase64encodedaccesskey",
+  "BING_MAPS_CREDENTIALS": "somehashedbingmapsaccesskey"
 }

@@ -1,4 +1,4 @@
-﻿<form name="setupForm" id="setupForm" action="setupPOST" method="post" enctype="multipart/form-data">
+﻿<form name="setupForm" id="setupForm" action="setupPOST" method="post">
   <fieldset>
     <label for="account">Storage Account</label>
     <br />
@@ -10,8 +10,8 @@
     <br />
     <label for="bingMapsCredentials">Bing Maps Credentials</label>
     <br />
-    <input type="text" name="bingMapsCredentials" id="bingMapsCredentials" />
+    <input type="text" name="bingMapsCredentials" id="bingMapsCredentials" required />
     <br />
-      <input type="submit" value="Save" />
+    <button type="submit">Save</button>
   </fieldset>
 </form>

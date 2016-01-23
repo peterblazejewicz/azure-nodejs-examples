@@ -23,18 +23,26 @@ nconf.file({ file: 'config.json' });
 var PushpinService = require('../services/pushpinService');
 
 var initialized = false;
-var pushpinService = new PushpinService(nconf.get('AZURE_STORAGE_ACCOUNT'), nconf.get('AZURE_STORAGE_ACCESS_KEY'));
+var pushpinService = null;
 
 exports.io = null;
 
 exports.setup = function (request, response) {
-  response.render('setup');
+  response.render('setup', {
+    title: 'Puspin Example: Setup',
+    bingMapsCredentials: '',
+    pushpins: []
+  });
 };
 
 exports.setupPOST = function (request, response) {
   var showError = function (message) {
     // TODO: actually show the error message
-    response.render('setup');
+    response.render('setup', {
+      title: 'Puspin Example: Setup',
+      bingMapsCredentials: '',
+      pushpins: []
+    });
   };
 
   if (request.body.account &&
@@ -79,6 +87,7 @@ exports.showPushpins = function (request, response) {
   if (!exports.isConfigured()) {
     response.redirect('/setup');
   } else if (!initialized) {
+    pushpinService = new PushpinService(nconf.get('AZURE_STORAGE_ACCOUNT'), nconf.get('AZURE_STORAGE_ACCESS_KEY'));
     pushpinService.initialize(action);
   } else {
     action();
@@ -114,6 +123,7 @@ exports.createPushpin = function (request, response) {
   if (!exports.isConfigured()) {
     response.redirect('/setup');
   } else if (!initialized) {
+    pushpinService = new PushpinService(nconf.get('AZURE_STORAGE_ACCOUNT'), nconf.get('AZURE_STORAGE_ACCESS_KEY'));
     pushpinService.initialize(action);
   } else {
     action();
