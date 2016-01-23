@@ -91,9 +91,18 @@ PushpinService.prototype.createPushpin = function (pushpinData, pushpinImage, ca
 
     self.tableClient.insertEntity(TABLE_NAME, entity, callback);
   };
-
-  if (pushpinImage) {
-    self.blobClient.createBlockBlobFromLocalFile(CONTAINER_NAME, rowKey, pushpinImage.path, insertEntity);
+  // support only 'image/*' type as
+  // hinted in upload file input
+  if (pushpinImage &&
+    pushpinImage.mimetype &&
+    pushpinImage.mimetype.indexOf('image/') === 0) {
+    var options = {
+      metadata: {
+        filename: pushpinImage.originalname
+      },
+      contentType: pushpinImage.mimetype
+    };
+    self.blobClient.createBlockBlobFromLocalFile(CONTAINER_NAME, rowKey, pushpinImage.path, options, insertEntity);
   } else {
     insertEntity();
   }
