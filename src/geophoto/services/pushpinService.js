@@ -86,7 +86,7 @@ PushpinService.prototype.createPushpin = function (pushpinData, pushpinImage, ca
 
 
     if (blob) {
-      entity.imageUrl = self.blobClient.getUrl(blob.container, blob.blob);
+      entity.imageUrl = entityGenerator.String(self.blobClient.getUrl(blob.container, blob.blob));
     }
 
     self.tableClient.insertEntity(TABLE_NAME, entity, callback);
