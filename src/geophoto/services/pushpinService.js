@@ -46,23 +46,25 @@ PushpinService.prototype.initialize = function (callback) {
   var self = this;
 
   var createContainer = function () {
-    // create blob container if it doesnt exist
-    self.blobClient.createContainerIfNotExists(CONTAINER_NAME, function (createContainerError, created) {
-      if (createContainerError) {
-        callback(createContainerError);
-      } else if (created) {
-        self.blobClient.setContainerAcl(CONTAINER_NAME, azure.Constants.BlobConstants.BlobContainerPublicAccessType.BLOB,
-          callback);
+    // the pushpins blog urls should
+    // be accessible for anonymous access
+    var accessLevel = {
+      publicAccessLevel: azure.Constants.BlobConstants.BlobContainerPublicAccessType.BLOB
+    };
+    // create blob container if it doesn't exist
+    self.blobClient.createContainerIfNotExists(CONTAINER_NAME, accessLevel, function (error, result, response) {
+      if (error) {
+        callback(error);
       } else {
         callback();
       }
     });
   };
 
-  // create table if it doesnt exist
-  self.tableClient.createTableIfNotExists(TABLE_NAME, function (createTableError) {
-    if (createTableError) {
-      callback(createTableError);
+  // create table if it doesn't exist
+  self.tableClient.createTableIfNotExists(TABLE_NAME, function (error, result, response) {
+    if (error) {
+      callback(error);
     } else {
       createContainer();
     }
