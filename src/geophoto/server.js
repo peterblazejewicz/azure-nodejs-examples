@@ -47,7 +47,7 @@ if ('development' === app.get('env')) {
   app.use(errorHandler());
 }
 
-if ('production' == app.get('env')) {
+if ('production' === app.get('env')) {
   app.use(errorHandler());
 }
 
