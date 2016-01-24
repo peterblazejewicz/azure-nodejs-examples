@@ -15,43 +15,46 @@
 // 
 
 var fs = require('fs');
-if (!fs.existsSync) {
-  fs.existsSync = require('path').existsSync;
-}
-
+var path = require('path');
 var azure;
-if (fs.existsSync('./../../lib/azure.js')) {
+
+try {
+  fs.statSync('./../../lib/azure.js');
   azure = require('./../../lib/azure');
-} else {
+} catch(error) {
   azure = require('azure');
 }
 
 var express = require('express');
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
+var errorHandler = require('errorhandler');
 var formidable = require('formidable');
 var helpers = require('./helpers.js');
 
-var app = module.exports = express.createServer();
+var app = module.exports = express();
 // Global request options, set the retryPolicy
-var blobClient = azure.createBlobService('UseDevelopmentStorage=true').withFilter(new azure.ExponentialRetryPolicyFilter());
+// var blobClient = azure.createBlobService('UseDevelopmentStorage=true')
+var blobClient = azure.createBlobService(process.env.CONNECTION_STRING)
+  .withFilter(new azure.ExponentialRetryPolicyFilter());
 var containerName = 'webpi';
 
 //Configuration
-app.configure(function () {
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
-  app.use(express.methodOverride());
-  // app.use(express.logger());
-  app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
-});
+app.set('port', process.env.PORT || 3000);
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true}));
+app.use(methodOverride());
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.configure('development', function () {
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
+if(app.get('env') === 'development') {
+  app.use(errorHandler());
+};
 
-app.configure('production', function () {
-  app.use(express.errorHandler());
-});
+if(app.get('env') === 'production') {
+  app.use(errorHandler());
+};
 
 app.param(':id', function (req, res, next) {
   next();

@@ -1,0 +1,7 @@
+# excluded
+typings
+.vscode
+.editorconfig
+.jshintrc
+tsd.json
+jsconfig.json
