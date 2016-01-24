@@ -16,6 +16,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var util = require('util');
 var azure;
 
 try {
@@ -30,7 +31,7 @@ var expressEjsLayouts = require('express-ejs-layouts');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var errorHandler = require('errorhandler');
-var formidable = require('formidable');
+var multer = require('multer')({ dest: './uploads' });
 var helpers = require('./helpers.js');
 
 var app = module.exports = express();
@@ -86,10 +87,10 @@ app.get('/Display', function (req, res) {
 });
 
 app.get('/Download/:id', function (req, res) {
-  blobClient.getBlobProperties(containerName, req.params.id, function (err, blobInfo) {
-    if (err === null) {
-      res.header('content-type', blobInfo.contentType);
-      res.header('content-disposition', 'attachment; filename=' + blobInfo.metadata.filename);
+  blobClient.getBlobProperties(containerName, req.params.id, function (err, result, response) {
+    if (!err) {
+      res.header('content-type', result.contentType);
+      res.header('content-disposition', 'attachment; filename=' + result.metadata.filename);
       blobClient.getBlobToStream(containerName, req.params.id, res, function () { });
     } else {
       helpers.renderError(res);
@@ -97,48 +98,50 @@ app.get('/Download/:id', function (req, res) {
   });
 });
 
-app.post('/uploadhandler', function (req, res) {
-  var form = new formidable.IncomingForm();
-
-  form.parse(req, function (err, fields, files) {
-    var formValid = true;
-    if (fields.itemName === '') {
-      helpers.renderError(res);
-      formValid = false;
-    }
-
-    if (formValid) {
-      var extension = files.uploadedFile.name.split('.').pop();
-      var newName = fields.itemName + '.' + extension;
-
-      var options = {
-        contentType: files.uploadedFile.type,
-        metadata: { fileName: newName }
-      };
-
-      blobClient.createBlockBlobFromFile(containerName, fields.itemName, files.uploadedFile.path, options, function (error) {
-        if (error != null) {
-          helpers.renderError(res);
-        } else {
-          setSAS(containerName, fields.itemName);
-          res.redirect('/Display');
-        }
-      });
-    } else {
-      helpers.renderError(res);
-    }
-  });
+app.post('/uploadhandler', multer.array('uploadedFile'), function (req, res) {
+  if (!req.body.itemName || !req.files || req.files.length === 0) {
+    helpers.renderError(res);
+  } else {
+    var name = req.body.itemName;
+    var file = req.files[0];
+    var extension = path.extname(file.originalname);
+    var newName = util.format('%s%s', req.body.itemName, extension);
+    var options = {
+      contentType: file.mimetype,
+      metadata: {
+        filename: newName
+      }
+    };
+    blobClient.createBlockBlobFromLocalFile(containerName, name, file.path, options, function (error, result, response) {
+      if (error) {
+        helpers.renderError(res);
+      } else {
+        setSAS(containerName, name);
+        res.redirect('/Display');
+      }
+    });
+  }
 });
 
 app.post('/Delete/:id', function (req, res) {
-  blobClient.deleteBlob(containerName, req.params.id, function (error) {
-    if (error != null) {
+  blobClient.deleteBlob(containerName, req.params.id, function (error, response) {
+    if (error) {
       helpers.renderError(res);
     } else {
       res.redirect('/Display');
     }
   });
 });
+
+function setSAS(containerName, blobName) {
+  var sharedAccessPolicy = {
+    AccessPolicy: {
+      Expiry: azure.date.minutesFromNow(3)
+    }
+  };
+  var blobUrl = blobClient.getUrl(containerName, blobName, sharedAccessPolicy);
+  console.log("access the blob at: %s", blobUrl);
+}
 
 app.listen(app.get('port'), function () {
   console.log("Express server listening on port %d in %s mode", app.get('port'), app.get('env'));
@@ -151,14 +154,3 @@ app.listen(app.get('port'), function () {
       }
     });
 });
-
-function setSAS(containerName, blobName) {
-  var sharedAccessPolicy = {
-    AccessPolicy: {
-      Expiry: azure.date.minutesFromNow(3)
-    }
-  };
-
-  var blobUrl = blobClient.getBlobUrl(containerName, blobName, sharedAccessPolicy);
-  console.log("access the blob at ", blobUrl);
-}
