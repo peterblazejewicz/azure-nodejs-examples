@@ -77,11 +77,11 @@ app.get('/Upload', function (req, res) {
 });
 
 app.get('/Display', function (req, res) {
-  blobClient.listBlobs(containerName, function (error, blobs) {
-    res.render('display.ejs', { locals: {
+  blobClient.listBlobsSegmented(containerName, null, {}, function (error, result, response) {
+    // result {continuationToken, entries}
+    res.render('display.ejs', {
       title: 'List of Blobs',
-      serverBlobs: blobs
-    }
+      serverBlobs: result.entries
     });
   });
 });
