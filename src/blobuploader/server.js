@@ -35,8 +35,7 @@ var helpers = require('./helpers.js');
 var app = module.exports = express();
 // Global request options, set the retryPolicy
 // var blobClient = azure.createBlobService('UseDevelopmentStorage=true')
-var blobClient = azure.createBlobService(process.env.CONNECTION_STRING)
-  .withFilter(new azure.ExponentialRetryPolicyFilter());
+var blobClient = null;
 var containerName = 'webpi';
 
 //Configuration
@@ -56,7 +55,8 @@ if(app.get('env') === 'production') {
   app.use(errorHandler());
 };
 
-app.param(':id', function (req, res, next) {
+app.param('id', function (req, res, next, id) {
+  console.log('param :id %s', id);
   next();
 });
 
@@ -140,15 +140,6 @@ app.post('/Delete/:id', function (req, res) {
   });
 });
 
-blobClient.createContainerIfNotExists(containerName, function (error) {
-  if (error) {
-    console.log(error);
-  } else {
-    setPermissions();
-  }
-});
-
-
 function setSAS(containerName, blobName) {
     var sharedAccessPolicy = {
         AccessPolicy: {
@@ -160,13 +151,14 @@ function setSAS(containerName, blobName) {
     console.log("access the blob at ", blobUrl);
 }
 
-function setPermissions() {
-  blobClient.setContainerAcl(containerName, azure.Constants.BlobConstants.BlobContainerPublicAccessType.BLOB, function (error) {
-    if (error) {
-      console.log(error);
-    } else {
-      app.listen(process.env.port || 1337);
-      console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
-    }
+app.listen(app.get('port'), function() {
+  console.log("Express server listening on port %d in %s mode", app.get('port'), app.get('env'));
+  blobClient = azure.createBlobService(process.env.CONNECTION_STRING)
+    .withFilter(new azure.ExponentialRetryPolicyFilter());
+  blobClient.createContainerIfNotExists(containerName, {publicAccessType: 'blob'},
+    function (error, result, response) {
+      if(error) {
+        console.log(error);
+      }
   });
-}
+});
