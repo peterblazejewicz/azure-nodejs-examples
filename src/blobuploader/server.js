@@ -26,6 +26,7 @@ try {
 }
 
 var express = require('express');
+var expressEjsLayouts = require('express-ejs-layouts');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var errorHandler = require('errorhandler');
@@ -42,6 +43,7 @@ var containerName = 'webpi';
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(expressEjsLayouts);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(methodOverride());
@@ -62,10 +64,9 @@ app.param('id', function (req, res, next, id) {
 
 //Routes
 app.get('/', function (req, res) {
-  res.render('index.ejs', { locals: {
-    title: 'Welcome'
-  }
-  });
+  res.render('index.ejs', {
+      title: 'Welcome'
+    });
 });
 
 app.get('/Upload', function (req, res) {
@@ -140,17 +141,6 @@ app.post('/Delete/:id', function (req, res) {
   });
 });
 
-function setSAS(containerName, blobName) {
-    var sharedAccessPolicy = {
-        AccessPolicy: {
-            Expiry: azure.date.minutesFromNow(3)
-        }
-    };
-
-    var blobUrl = blobClient.getBlobUrl(containerName, blobName, sharedAccessPolicy);
-    console.log("access the blob at ", blobUrl);
-}
-
 app.listen(app.get('port'), function() {
   console.log("Express server listening on port %d in %s mode", app.get('port'), app.get('env'));
   blobClient = azure.createBlobService(process.env.CONNECTION_STRING)
@@ -162,3 +152,14 @@ app.listen(app.get('port'), function() {
       }
   });
 });
+
+function setSAS(containerName, blobName) {
+    var sharedAccessPolicy = {
+        AccessPolicy: {
+            Expiry: azure.date.minutesFromNow(3)
+        }
+    };
+
+    var blobUrl = blobClient.getBlobUrl(containerName, blobName, sharedAccessPolicy);
+    console.log("access the blob at ", blobUrl);
+}
