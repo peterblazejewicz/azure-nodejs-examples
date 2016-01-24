@@ -21,7 +21,7 @@ var azure;
 try {
   fs.statSync('./../../lib/azure.js');
   azure = require('./../../lib/azure');
-} catch(error) {
+} catch (error) {
   azure = require('azure');
 }
 
@@ -45,15 +45,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(expressEjsLayouts);
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
 
-if(app.get('env') === 'development') {
+if (app.get('env') === 'development') {
   app.use(errorHandler());
 };
 
-if(app.get('env') === 'production') {
+if (app.get('env') === 'production') {
   app.use(errorHandler());
 };
 
@@ -65,14 +65,13 @@ app.param('id', function (req, res, next, id) {
 //Routes
 app.get('/', function (req, res) {
   res.render('index.ejs', {
-      title: 'Welcome'
-    });
+    title: 'Welcome'
+  });
 });
 
 app.get('/Upload', function (req, res) {
-  res.render('upload.ejs', { locals: {
+  res.render('upload.ejs', {
     title: 'Upload File'
-  }
   });
 });
 
@@ -141,25 +140,25 @@ app.post('/Delete/:id', function (req, res) {
   });
 });
 
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), function () {
   console.log("Express server listening on port %d in %s mode", app.get('port'), app.get('env'));
   blobClient = azure.createBlobService(process.env.CONNECTION_STRING)
     .withFilter(new azure.ExponentialRetryPolicyFilter());
-  blobClient.createContainerIfNotExists(containerName, {publicAccessType: 'blob'},
+  blobClient.createContainerIfNotExists(containerName, { publicAccessType: 'blob' },
     function (error, result, response) {
-      if(error) {
+      if (error) {
         console.log(error);
       }
-  });
+    });
 });
 
 function setSAS(containerName, blobName) {
-    var sharedAccessPolicy = {
-        AccessPolicy: {
-            Expiry: azure.date.minutesFromNow(3)
-        }
-    };
+  var sharedAccessPolicy = {
+    AccessPolicy: {
+      Expiry: azure.date.minutesFromNow(3)
+    }
+  };
 
-    var blobUrl = blobClient.getBlobUrl(containerName, blobName, sharedAccessPolicy);
-    console.log("access the blob at ", blobUrl);
+  var blobUrl = blobClient.getBlobUrl(containerName, blobName, sharedAccessPolicy);
+  console.log("access the blob at ", blobUrl);
 }
