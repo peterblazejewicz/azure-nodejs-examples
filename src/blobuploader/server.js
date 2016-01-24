@@ -35,8 +35,6 @@ var multer = require('multer')({ dest: './uploads' });
 var helpers = require('./helpers.js');
 
 var app = module.exports = express();
-// Global request options, set the retryPolicy
-// var blobClient = azure.createBlobService('UseDevelopmentStorage=true')
 var blobClient = null;
 var containerName = 'webpi';
 
@@ -145,7 +143,8 @@ function setSAS(containerName, blobName) {
 
 app.listen(app.get('port'), function () {
   console.log("Express server listening on port %d in %s mode", app.get('port'), app.get('env'));
-  blobClient = azure.createBlobService(process.env.CONNECTION_STRING)
+  // Global request options, set the retryPolicy
+  blobClient = azure.createBlobService('UseDevelopmentStorage=true')
     .withFilter(new azure.ExponentialRetryPolicyFilter());
   blobClient.createContainerIfNotExists(containerName, { publicAccessType: 'blob' },
     function (error, result, response) {
