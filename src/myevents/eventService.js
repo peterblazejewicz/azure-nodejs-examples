@@ -1,20 +1,20 @@
-// 
+//
 // Copyright (c) Microsoft and contributors.  All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// 
+//
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// 
+//
 
-var azure = require('./../../lib/azure')
+var azure = require('azure')
   , uuid = require('node-uuid');
 module.exports = EventService;
 
@@ -24,13 +24,13 @@ function EventService (tableClient, blobClient) {
 };
 
 EventService.prototype = {
-	
+
 	showEvents: function(req, res) {
 		var self = this;
 		this.getEvents(function (resp, eventList) {
             if (!eventList) {
                 eventList = [];
-            }			
+            }
             self.showResults(res, eventList);
         });
 	},
@@ -41,7 +41,7 @@ EventService.prototype = {
             if (!eventItem) {
                 res.render('error', {
                    title: "Error",
-                   message: 'Event ' + req.params.id + ' not found.' 
+                   message: 'Event ' + req.params.id + ' not found.'
                 });
             } else {
                 res.render('detail', {
@@ -66,9 +66,9 @@ EventService.prototype = {
     },
 
     showResults: function (res, eventList) {
-        res.render('index', { 
-            title: 'My Events', 
-            eventList: eventList 
+        res.render('index', {
+            title: 'My Events',
+            eventList: eventList
         });
     },
 
@@ -85,13 +85,13 @@ EventService.prototype = {
             var item = req.body.item;
             item.RowKey = uuid();
             item.PartitionKey = 'myEvents';
-            
+
             self.tableClient.insertEntity('events', item, function(error) {
                 if (error) {
                    console.log(error);
                    throw error;
-                }  
-                              
+                }
+
                 console.log('event created, uploading photo.');
 
                 var options = {
@@ -108,7 +108,7 @@ EventService.prototype = {
                   }
                 });
 
-               
+
             });
         };
 
