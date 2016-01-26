@@ -8,7 +8,7 @@
 <ul>
   <% for(var i=0; i<eventList.length; i++) {%>
   <li>
-    <a href="/events/<%= eventList[i].RowKey %>"><%= eventList[i].name %><a/>: <%= eventList[i].date %>
+    <a href="/events/<%= eventList[i].RowKey._ %>"><%= eventList[i].name._ %><a/>: <%= eventList[i].date._ %>
   </li>
   <% } %>
 </ul>
@@ -46,7 +46,7 @@
         <label for="item-file">Event Image:</label>
       </td>
 			<td>
-        <input id="item-file" type="file" name="item[file]" accept="image/*">
+        <input id="item-file" type="file" name="item[file]" accept="image/*" required >
       </td>
 		<tr>
 	</table>

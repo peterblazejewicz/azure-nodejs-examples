@@ -18,7 +18,7 @@ var express = require('express'),
   expressEjsLayouts = require('express-ejs-layouts'),
   bodyParser = require('body-parser'),
   methodOverride = require('method-override'),
-  multer = require('multer'),
+  multer = require('multer')({dest: './uploads'}),
   errorhandler = require('errorhandler'),
   path = require('path'),
   EventService = require('./eventService'),
@@ -67,7 +67,7 @@ if (app.get('env') === 'production') {
 
 var eventService = new EventService(tableClient, blobClient);
 app.get('/', eventService.showEvents.bind(eventService));
-app.post('/events/create', eventService.newEvent.bind(eventService));
+app.post('/events/create', multer.array('item[file]'), eventService.newEvent.bind(eventService));
 app.get('/events/:id', eventService.showEvent.bind(eventService))
 
 app.listen(app.get('port'), function() {;

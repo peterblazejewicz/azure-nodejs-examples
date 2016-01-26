@@ -69,35 +69,38 @@ EventService.prototype = {
   newEvent: function (req, res) {
     var self = this;
 
-    var createEvent = function (resp, eventList) {
-      if (!eventList) {
-        eventList = [];
-      }
-
-      var count = eventList.length;
+    var createEvent = function (error, result, response) {
+      var count = result.entries.length;
 
       var item = req.body.item;
-      item.RowKey = uuid();
-      item.PartitionKey = 'myEvents';
+      var eg = azure.TableUtilities.entityGenerator;
+      var event = {
+        RowKey: eg.String(uuid()),
+        PartitionKey: eg.String('myEvents'),
+        date: eg.String(item.date),
+        description: eg.String(item.description),
+        name: eg.String(item.name)
+      };
 
-      self.tableClient.insertEntity('events', item, function (error) {
+      self.tableClient.insertEntity('events', event, function (error, result, response) {
         if (error) {
           console.log(error);
           throw error;
         }
 
         console.log('event created, uploading photo.');
-
+        var file = req.files[0];
         var options = {
-          contentType: req.files.item.file.type,
-          metadata: { fileName: item.RowKey }
+          contentType: file.mimetype,
+          metadata: {
+            fileName: event.RowKey._
+          }
         };
-
-        self.blobClient.createBlockBlobFromFile('photos', item.RowKey, req.files.item.file.path, options, function (error1, blockBlob, response) {
-          if (error1) {
+        self.blobClient.createBlockBlobFromLocalFile('photos', event.RowKey._, file.path, options, function (error, result, response) {
+          if (error) {
             throw error;
           } else {
-            console.log(JSON.stringify(blockBlob));
+            console.log(JSON.stringify(result));
             res.redirect('/');
           }
         });
