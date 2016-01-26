@@ -70,8 +70,6 @@ EventService.prototype = {
     var self = this;
 
     var createEvent = function (error, result, response) {
-      var count = result.entries.length;
-
       var item = req.body.item;
       var eg = azure.TableUtilities.entityGenerator;
       var event = {
@@ -87,7 +85,6 @@ EventService.prototype = {
           console.log(error);
           throw error;
         }
-
         console.log('event created, uploading photo.');
         var file = req.files[0];
         var options = {
@@ -104,8 +101,6 @@ EventService.prototype = {
             res.redirect('/');
           }
         });
-
-
       });
     };
 
