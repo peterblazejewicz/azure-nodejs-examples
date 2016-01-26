@@ -34,17 +34,17 @@ EventService.prototype = {
 
   showEvent: function (req, res) {
     var self = this;
-    this.getEvent(req.params.id, function (resp, eventItem) {
-      if (!eventItem) {
+    this.getEvent(req.params.id, function (error, result, response) {
+      if (!result) {
         res.render('error', {
           title: "Error",
           message: 'Event ' + req.params.id + ' not found.'
         });
       } else {
         res.render('detail', {
-          title: eventItem.name,
-          eventItem: eventItem,
-          imageUrl: self.blobClient.getBlobUrl('photos', eventItem.RowKey),
+          title: result.name._,
+          eventItem: result,
+          imageUrl: self.blobClient.getUrl('photos', result.RowKey._),
         });
       }
     });
@@ -56,7 +56,7 @@ EventService.prototype = {
   },
 
   getEvent: function (id, callback) {
-    this.tableClient.queryEntity('events', 'myEvents', id, callback);
+    this.tableClient.retrieveEntity('events', 'myEvents', id, callback);
   },
 
   showResults: function (res, eventList) {
