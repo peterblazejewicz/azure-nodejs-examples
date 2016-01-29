@@ -30,11 +30,11 @@ var serviceBusClient = azure.createServiceBusService();
 
 function createQueue() {
   // Step 0: Create queue.
-  serviceBusClient.createQueueIfNotExists(queue, function (error, queue, response) {
+  serviceBusClient.createQueueIfNotExists(queue, function (error, queueCreated, response) {
     if (error) {
       console.log(error);
     } else {
-      console.log('Created the queue ' + queue);
+      console.log('Created the queue: %s', queueCreated);
       sendMessages();
     }
   });
