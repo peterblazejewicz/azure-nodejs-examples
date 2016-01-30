@@ -41,7 +41,7 @@ function createQueue() {
 
 function sendMessages() {
   // Step 1: Send a few messages to later be consumed.
-  serviceBusClient.sendQueueMessage(queue, 'Send Message Works', function (error, result, response) {
+  serviceBusClient.sendQueueMessage(queue, 'Send Message Works', function (error, response) {
     if (error) {
       console.log(error);
     } else {
@@ -59,21 +59,19 @@ function sendMessages() {
 }
 
 function receiveMessages() {
-  // Step 2: Receive (peek) the messages
-  // the isPeekLock prevents message delate
-  serviceBusClient.receiveQueueMessage(queue, { isPeekLock: true }, function (error, message, response) {
+  // Step 2: Receive the messages
+  serviceBusClient.receiveQueueMessage(queue, function (error, message1, response) {
     if (error) {
       console.log(error);
     } else {
-      // Message received and locked
-      console.log(message.body);
-      // Step 3: Remove message after processing
-      serviceBusClient.deleteMessage(message, function (error, response) {
+      // Message received
+      console.log(message1.body);
+      serviceBusClient.receiveQueueMessage(queue, function (error, message2, response) {
         if (error) {
           console.log(error);
         } else {
-          // Message deleted
-          console.log('message deleted');
+          // Message received
+          console.log(message2.body);
         }
       });
     }
