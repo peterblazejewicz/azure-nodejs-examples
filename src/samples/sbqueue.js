@@ -16,11 +16,10 @@
 
 var fs = require('fs');
 var path = require('path');
-var util = require('util');
 var azure;
 try {
   fs.statSync(path.join(__dirname, './../../lib/azure.js'));
-  azure = require(path.join(__dirname, './../../lib/azure'));
+  azure = require('./../../lib/azure');
 } catch (error) {
   azure = require('azure');
 }
@@ -47,7 +46,7 @@ function sendMessages() {
       console.log(error);
     } else {
       console.log('Sent first Message');
-      serviceBusClient.sendQueueMessage(queue, 'Send Message Still Works', function (error, result, reponse) {
+      serviceBusClient.sendQueueMessage(queue, 'Send Message Still Works', function (error, response) {
         if (error) {
           console.log(error);
         } else {
@@ -60,19 +59,21 @@ function sendMessages() {
 }
 
 function receiveMessages() {
-  // Step 2: Receive the messages.
+  // Step 2: Receive (peek) the messages
+  // the isPeekLock prevents message delate
   serviceBusClient.receiveQueueMessage(queue, { isPeekLock: true }, function (error, message, response) {
     if (error) {
       console.log(error);
     } else {
+      // Message received and locked
       console.log(message.body);
-      // Step 3: Remove/dequeue message
+      // Step 3: Remove message after processing
       serviceBusClient.deleteMessage(message, function (error, response) {
         if (error) {
           console.log(error);
         } else {
-          // deleted
-          console.log(response);
+          // Message deleted
+          console.log('message deleted');
         }
       });
     }
@@ -83,9 +84,9 @@ var args = process.argv;
 
 if (args.length > 3) {
   console.log('Incorrect number of arguments');
-} else if (args.length == 3) {
+} else if (args.length === 3) {
   // Adding a third argument on the command line, whatever it is, will delete the container before running the sample.
-  serviceBusClient.deleteQueue(queue, function (error, deleted, response) {
+  serviceBusClient.deleteQueue(queue, function (error, response) {
     if (error) {
       console.log(error);
     } else {
