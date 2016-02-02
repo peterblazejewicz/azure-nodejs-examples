@@ -159,17 +159,18 @@ function createAnotherSnapshot(snapshot) {
 
 function listSnapshots(snapshotId) {
   // Step 5 : List the blobs, including snapshots
-  blobClient.listBlobsSegmented(container, { include: 'snapshots' }, function (error, result, reponse) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Listing the blobs under the container %s', container);
-      result.entries.forEach(function (blobResult) {
-        console.log('  Blob: %s', blobResult.url);
-      });
-      promoteSnapshot(snapshotId);
-    }
-  });
+  blobClient.listBlobsSegmented(container, null,
+    function (error, result, reponse) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Listing the blobs under the container %s', container);
+        result.entries.forEach(function (blobResult) {
+          console.log('  Blob: %s', blobResult.name);
+        });
+        promoteSnapshot(snapshotId);
+      }
+    });
 };
 
 function promoteSnapshot(snapshot) {
@@ -186,7 +187,7 @@ function promoteSnapshot(snapshot) {
 
 function deleteSnapshot(snapshot) {
   // Step 7 : Delete the first snapshot.
-  blobClient.deleteBlob(container, blob, { snapshotId: snapshot }, function (error, result, response) {
+  blobClient.deleteBlob(container, blob, { snapshotId: snapshot }, function (error, response) {
     if (error) {
       console.log(error);
     } else {
@@ -198,7 +199,7 @@ function deleteSnapshot(snapshot) {
 
 function listOnlySnapshots() {
   // Step 8 : List the snapshots.
-  blobClient.listBlobsSegmented(container, { prefix: blob, include: 'snapshots' }, function (error, result, response) {
+  blobClient.listBlobsSegmented(container, null, function (error, result, response) {
     if (error) {
       console.log(error);
     } else {
